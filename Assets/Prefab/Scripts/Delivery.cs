@@ -15,6 +15,7 @@ public class Delivery : MonoBehaviour
         {
             Debug.Log("Picked up package");
             hasPackage = true;
+            GetComponent<ParticleSystem>().Play();
             Destroy(collision.gameObject, delay);
         }
 
@@ -22,6 +23,7 @@ public class Delivery : MonoBehaviour
         {
             Debug.Log("Delivered to customer");
             hasPackage = false;
+            GetComponent<ParticleSystem>().Stop();
             Destroy(collision.gameObject, delay);
         }
     }
