@@ -1,12 +1,20 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class Driver : MonoBehaviour
 {
     [SerializeField] float currentSpeed = 5f;
     [SerializeField] float steerSpeed = 75f;
     [SerializeField] float regularSpeed = 5f;
-    [SerializeField] float boostSpeed = 10f;
+    [SerializeField] float boostSpeed = 15f;
+
+    [SerializeField] TMP_Text boostText;
+
+    private void Start()
+    {
+        boostText.gameObject.SetActive(false);
+    }
 
     void Update()
     {
@@ -46,15 +54,20 @@ public class Driver : MonoBehaviour
             {
                 Debug.Log("Go Faster");
                 currentSpeed = boostSpeed;
+                boostText.gameObject.SetActive(true);
                 Destroy(collision.gameObject);
 
             }
         }
-        void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        
+        if (collision.collider.CompareTag("EnvorimentalCollision"))
         {
             Debug.Log("Go Slower");
             currentSpeed = regularSpeed;
-            
+            boostText.gameObject.SetActive(false);
         }
     }
+}
 
