@@ -3,8 +3,10 @@ using UnityEngine.InputSystem;
 
 public class Driver : MonoBehaviour
 {
-    [SerializeField] float moveSpeed = 5f;
+    [SerializeField] float currentSpeed = 5f;
     [SerializeField] float steerSpeed = 75f;
+    [SerializeField] float regularSpeed = 5f;
+    [SerializeField] float boostSpeed = 10f;
 
     void Update()
     {
@@ -15,26 +17,44 @@ public class Driver : MonoBehaviour
         {
             move = 1f;
         }
-        
+
         else if (Keyboard.current.wKey.isPressed)
         {
             move = -1f;
         }
-        
+
         if (Keyboard.current.aKey.isPressed)
         {
             steer = 1f;
         }
-        
+
         else if (Keyboard.current.dKey.isPressed)
         {
             steer = -1f;
         }
 
-        float moveAmount = move * moveSpeed * Time.deltaTime;
+        float moveAmount = move * currentSpeed * Time.deltaTime;
         float steerAmount = steer * steerSpeed * Time.deltaTime;
 
         transform.Translate(0, moveAmount, 0);
         transform.Rotate(0, 0, steerAmount);
     }
-}
+
+        void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.CompareTag("Speed"))
+            {
+                Debug.Log("Go Faster");
+                currentSpeed = boostSpeed;
+                Destroy(collision.gameObject);
+
+            }
+        }
+        void OnCollisionEnter2D(Collision2D collision)
+        {
+            Debug.Log("Go Slower");
+            currentSpeed = regularSpeed;
+            
+        }
+    }
+
