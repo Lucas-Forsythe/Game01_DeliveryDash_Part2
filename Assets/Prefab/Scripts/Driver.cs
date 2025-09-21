@@ -11,7 +11,9 @@ public class Driver : MonoBehaviour
 
     [SerializeField] TMP_Text boostText;
 
-    private void Start()
+    public AudioSource audioPlayer;
+
+    void Start()
     {
         boostText.gameObject.SetActive(false);
     }
@@ -48,17 +50,18 @@ public class Driver : MonoBehaviour
         transform.Rotate(0, 0, steerAmount);
     }
 
-        void OnTriggerEnter2D(Collider2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Speed"))
         {
-            if (collision.CompareTag("Speed"))
-            {
-                Debug.Log("Go Faster");
-                currentSpeed = boostSpeed;
-                boostText.gameObject.SetActive(true);
-                Destroy(collision.gameObject);
+            Debug.Log("Go Faster");
+            currentSpeed = boostSpeed;
+            boostText.gameObject.SetActive(true);
+            Destroy(collision.gameObject);
+            audioPlayer.Play();
 
-            }
         }
+    }
     void OnCollisionEnter2D(Collision2D collision)
     {
         
